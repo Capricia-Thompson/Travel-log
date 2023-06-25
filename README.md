@@ -1,2 +1,2 @@
 # Travel-log
-First collaborations with the greatest big sister in the world!
+First collaboration with the greatest big sister in the world!
