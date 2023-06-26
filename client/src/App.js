@@ -1,25 +1,56 @@
-import logo from './logo.svg';
 import './App.css';
+import React, {useEffect, useState} from 'react';
+import axios from "axios";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+  const [user, setUser] = useState({
+    username:"",
+    email:"",
+    password:"",
+    confirmPassword:""
+})
+
+const changeHandler =(e) =>{
+    let {name, value} = e.target
+    setUser({
+        ...user,
+        [name] : value
+    })
+}
+
+const submitHandler = (e) =>{
+    e.preventDefault()
+    axios.post(`http://localhost:8000/api/register`, user, {withCredentials:true})
+        .then(res=>{
+            console.log(res.data)
+        })
+        .catch(err => console.log(err.response))
+}
+
+
+return (
+    <div>
+        <form onSubmit={submitHandler}>
+            <div>
+                <label>Username</label>
+                <input type="text" name="username" value={user.firstName} onChange={changeHandler} />
+            </div>
+            <div>
+                <label>Email</label>
+                <input type="text" name="email" value={user.email} onChange={changeHandler} />
+            </div>
+            <div>
+                <label>Password</label>
+                <input type="password" name="password" value={user.password} onChange={changeHandler} />
+            </div>
+            <div>
+                <label>Confirm Password</label>
+                <input type="password" name="confirmPassword" value={user.confirmPassword} onChange={changeHandler} />
+            </div>
+            <button> Register </button>
+        </form>
     </div>
-  );
+)
 }
 
 export default App;
