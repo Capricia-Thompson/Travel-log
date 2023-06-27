@@ -1,4 +1,5 @@
 const User = require('../models/user.model');
+const Post = require('../models/post.model')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
@@ -8,6 +9,12 @@ module.exports = {
             .then(user => {
                 if (user) {
                     return res.status(400).json({ msg: "Email already in use. Please log in." })
+                }
+            })
+        User.findOne({ username: req.body.username })
+            .then(user => {
+                if (user) {
+                    return res.status(400).json({ msg: "Username already in use. Please choose a different username." })
                 }
             })
         User.create(req.body)
@@ -42,5 +49,6 @@ module.exports = {
         User.findOne({ _id: decodedJwt.payload.id })
             .then(user => res.json(user))
             .catch(err => res.status(500).json(err))
-    }
+    },
+
 }

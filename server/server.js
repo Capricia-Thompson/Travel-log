@@ -20,5 +20,6 @@ app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 
 require('./routes/user.routes')(app);
+require('./routes/post.routes')(app);
 
 app.listen(port, () => console.log(`Welcome! Listening on port: ${port}`));
