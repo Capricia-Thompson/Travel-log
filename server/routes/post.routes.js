@@ -7,5 +7,5 @@ const { authenticate } = require('../configs/jwt.config');
 
 module.exports = app => {
     app.post('/api/post', createPost)
-    app.get('/api/posts', getAllPosts)
+    app.get('/api/posts', authenticate, getAllPosts)
 }

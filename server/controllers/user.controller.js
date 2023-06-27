@@ -42,7 +42,7 @@ module.exports = {
     },
     logout: (req, res) => {
         res.clearCookie('usertoken')
-        res.sendStatus(200)
+        res.json({ msg: "User logged out" })
     },
     getUser: (req, res) => {
         const decodedJwt = jwt.decode(req.cookies.usertoken, { complete: true })
