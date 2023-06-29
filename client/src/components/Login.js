@@ -1,47 +1,132 @@
-import React, { useState } from 'react'
-import axios from "axios"
+import React, { useState } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import {BsFillEyeFill, BsFillEyeSlashFill} from 'react-icons/bs'
 
 const Login = () => {
-    const [user, setUser] = useState({
-        email: "",
-        password: "",
-    })
+//   const navigate = useNavigate();
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const icon = passwordVisible ? <BsFillEyeFill/> : <BsFillEyeSlashFill/>
 
-    const changeHandler = (e) => {
-        let { name, value } = e.target
-        setUser({
-            ...user,
-            [name]: value
-        })
-    }
+  const submitHandler = (e) => {
+    e.preventDefault();
+    const user = {email, password}
+    axios
+      .post(`http://localhost:8000/api/login`, user, { withCredentials: true })
+      .then((res) => console.log("Successful log in!"))
+      // login user and navigate to dashboard
+      // clear form
+      .catch((err) => {
+        console.log(err.response.data.msg);
+      });
+  };
 
-    const submitHandler = (e) => {
-        e.preventDefault()
-        axios.post(`http://localhost:8000/api/login`, user, { withCredentials: true })
-            .then(res => console.log("Successful log in!"))
-            .catch(err => {
-                console.log(err.response.data.msg)
-            })
-    }
+  const togglePasswordVisibility = () => {
+    setPasswordVisible((prevVisible) => !prevVisible);
+  };
 
-
-    return (
-        <div>
-            <form onSubmit={submitHandler}>
-                <div>
-                    <label>Email</label>
-                    <input type="text" name="email" value={user.email} onChange={changeHandler} />
+  return (
+    <div className="container max-w-full mx-auto py-24 px-6">
+      <div className="font-sans">
+        <div className="max-w-sm mx-auto px-6">
+          <div className="relative flex flex-wrap">
+            <div className="w-full relative">
+              <div className="mt-6">
+                <div className="mb-5 pb-1border-b-2 text-center font-base text-gray-700">
+                  <span>
+                    By{" "}
+                    <Link
+                      className="text-blue-500"
+                      href="https://twitter.com/framansi"
+                    >
+                      @dev_sistas
+                    </Link>
+                  </span>
                 </div>
-                <div>
-                    <label>Password</label>
-                    <input type="password" name="password" value={user.password} onChange={changeHandler} />
+                <div className="text-center font-semibold text-black">
+                  Login to complete your reservation!
                 </div>
 
-                <button> Login </button>
-            </form>
+                <form onSubmit={submitHandler} className="mt-8">
+                  <div className="mx-auto max-w-lg">
+                    <div className="py-2">
+                      <span className="px-1 text-sm text-gray-600">
+                        Email
+                      </span>
+                      <input
+                        type="text"
+                        className="text-md block px-3 py-2  rounded-lg w-full 
+                        bg-white border-2 border-gray-300 placeholder-gray-600 shadow-md focus:placeholder-gray-500 focus:bg-white focus:border-gray-600 focus:outline-none"
+                        placeholder="Email"
+                        aria-label="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        />
+                    </div>
+                    <div className="py-2">
+                      <span className="px-1 text-sm text-gray-600">
+                        Password
+                      </span>
+                      <div className="relative">
+                        <input
+                          placeholder="Password"
+                          type={passwordVisible ? "text" : "password"}
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          className="text-md block px-3 py-2  rounded-lg w-full 
+                        bg-white border-2 border-gray-300 placeholder-gray-600 shadow-md focus:placeholder-gray-500 focus:bg-white focus:border-gray-600 focus:outline-none"
+                        />
+                          <span
+                            className="text-dark text-lg bg-yellow-50 absolute"
+                            style={{
+                                position: "absolute",
+                                top: "8px",
+                                right: "10px",
+                                zIndex: "1000",
+                                cursor: "pointer",
+                            }} 
+                            onClick={togglePasswordVisibility}
+                            >
+                              {icon}</span>                  
+                        </div>
+                      </div>
+                    <div className="flex justify-between">
+                      <label className="block text-gray-500 font-bold my-4">
+                        <input
+                          type="checkbox"
+                          className="leading-loose text-pink-600"
+                        />{" "}
+                        <span className="py-2 text-sm text-gray-600 leading-snug">
+                          {" "}
+                          Remember Me{" "}
+                        </span>
+                      </label>{" "}
+                      <label className="block text-gray-500 font-bold my-4">
+                        <Link
+                          href="#"
+                          className="cursor-pointer tracking-tighter text-black border-b-2 border-gray-200 hover:border-gray-400"
+                        >
+                          <span>Forgot Password?</span>
+                        </Link>
+                      </label>
+                    </div>{" "}
+                    <button
+                      className="mt-3 text-lg font-semibold 
+                            bg-gray-800 w-full text-white rounded-lg
+                            px-6 py-3 block shadow-xl hover:text-white hover:bg-black"
+                    >
+                      Login
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
         </div>
-    )
-}
-
-export default Login
-
+      </div>
+    </div>
+  );
+};
+export default Login;

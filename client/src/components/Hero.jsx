@@ -3,7 +3,7 @@ import tranquil from '../images/tranquil_spring.jpeg'
 
 const Hero = () => {
   return (
-    <div className="w-full h-[90vh]">
+    <div id="home" className="w-full h-[90vh]">
       <img className="w-full h-full object-cover" src={tranquil} alt="tranquil" />
       <div className="max-w-[1140px] m-auto">
         <div className="absolute top-[40%] w-full md:-[50%] max-w-[600px] h-full flex flex-col text-white p-4">
