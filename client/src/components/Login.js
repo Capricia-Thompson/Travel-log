@@ -20,7 +20,7 @@ const Login = () => {
       .then((res) => {
         console.log(res.data, "Successful log in!")
         Cookies.set('loggedIn', true);
-        navigate('/deals')
+        navigate('/dashboard')
       })
       // login user and navigate to dashboard
       // clear form

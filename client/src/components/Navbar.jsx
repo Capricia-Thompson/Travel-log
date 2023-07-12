@@ -6,12 +6,12 @@ import Cookies from 'js-cookie'
 
 const Navbar = () => {
   const [nav, setNav] = useState(false)
-  const loggedIn = Cookies.get('loggedIn');
-  const isLoggedIn = loggedIn === 'true';
+  const user = Cookies.get('user');
+  const isLoggedIn = user === 'true';
   // loggedIn will be a string representation of the boolean value 'true' 
   // or undefined if the cookie is not set
   // You can convert it to a boolean value using JSON.parse or other methods
-  
+  console.log(isLoggedIn)
   const handleNav = () => {
     setNav(!nav)
   }
@@ -20,7 +20,7 @@ const Navbar = () => {
     axios.get('http://localhost:8000/api/logout', { withCredentials: true })
         .then(res => {
           console.log(res.data.msg)
-          Cookies.remove('loggedIn');
+          Cookies.remove('user');
         })
   }
 
