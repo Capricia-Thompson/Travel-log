@@ -1,12 +1,27 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
+import axios from 'axios'
 import { FaBars } from 'react-icons/fa'
 import { FaFacebookF, FaTwitter, FaGooglePlusG, FaInstagram } from 'react-icons/fa'
+import Cookies from 'js-cookie'
 
 const Navbar = () => {
   const [nav, setNav] = useState(false)
-
+  const loggedIn = Cookies.get('loggedIn');
+  const isLoggedIn = loggedIn === 'true';
+  // loggedIn will be a string representation of the boolean value 'true' 
+  // or undefined if the cookie is not set
+  // You can convert it to a boolean value using JSON.parse or other methods
+  
   const handleNav = () => {
     setNav(!nav)
+  }
+
+  const logoutFunc = () => {  
+    axios.get('http://localhost:8000/api/logout', { withCredentials: true })
+        .then(res => {
+          console.log(res.data.msg)
+          Cookies.remove('loggedIn');
+        })
   }
 
   return (
@@ -23,7 +38,18 @@ const Navbar = () => {
         </li>
         <li>
           <a href="/contact">Contact</a>
-        </li>        
+        </li>       
+        {isLoggedIn ? 
+        (<li>
+          <a href="/" className="hover:text-blue-400" onClick={logoutFunc}>Logout</a>
+        </li> )          
+        : (<li>
+          <a href="/login" className="hover:text-blue-400">Login</a>
+        </li>
+        )} 
+        <li>
+          <a href="/register" className="hover:text-blue-400">Sign Up</a>
+        </li>            
       </ul>
 
       <div className="flex justify-between">
@@ -52,7 +78,16 @@ const Navbar = () => {
         </li>
         <li className="text-2xl py-8 hover:text-blue-600">
           <a href="/contact">Contact</a>
-        </li>        
+        </li>     
+        {isLoggedIn ? (
+        <li className="text-2xl py-8 hover:text-blue-600">
+          <a href="/login" onClick={logoutFunc}>Logout</a>
+        </li>  
+        ) : (
+        <li className="text-2xl py-8 hover:text-blue-600">
+          <a href="/login">Login</a>
+        </li>  
+        )}      
       </ul>
       </div>
     </div>

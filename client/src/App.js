@@ -8,13 +8,12 @@ import Gallery from './components/Gallery';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import Login from './components/Login';
-
-// import Reg from './components/Reg';
+import Reg from './components/Reg';
+import Dashboard from './components/Dashboard';
 // import Posts from './components/Posts';
 // import PostForm from './components/PostForm';
 
 function App() {   
-
     return (
         <div>
             <TopBar />
@@ -25,6 +24,8 @@ function App() {
               <Route path="/gallery" element={<Gallery />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Reg />} />
+              <Route path="/dashboard" element={<Dashboard />} />
             </Routes>
             <Footer /> 
         </div>

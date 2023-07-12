@@ -1,21 +1,27 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {BsFillEyeFill, BsFillEyeSlashFill} from 'react-icons/bs'
+import Cookies from 'js-cookie'
 
 const Login = () => {
-//   const navigate = useNavigate();
+  const navigate = useNavigate();
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+
   const [passwordVisible, setPasswordVisible] = useState(false);
   const icon = passwordVisible ? <BsFillEyeFill/> : <BsFillEyeSlashFill/>
 
   const submitHandler = (e) => {
     e.preventDefault();
+
     const user = {email, password}
-    axios
-      .post(`http://localhost:8000/api/login`, user, { withCredentials: true })
-      .then((res) => console.log("Successful log in!"))
+    axios.post(`http://localhost:8000/api/login`, user, { withCredentials: true })
+      .then((res) => {
+        console.log(res.data, "Successful log in!")
+        Cookies.set('loggedIn', true);
+        navigate('/deals')
+      })
       // login user and navigate to dashboard
       // clear form
       .catch((err) => {
@@ -91,27 +97,7 @@ const Login = () => {
                             >
                               {icon}</span>                  
                         </div>
-                      </div>
-                    <div className="flex justify-between">
-                      <label className="block text-gray-500 font-bold my-4">
-                        <input
-                          type="checkbox"
-                          className="leading-loose text-pink-600"
-                        />{" "}
-                        <span className="py-2 text-sm text-gray-600 leading-snug">
-                          {" "}
-                          Remember Me{" "}
-                        </span>
-                      </label>{" "}
-                      <label className="block text-gray-500 font-bold my-4">
-                        <Link
-                          href="#"
-                          className="cursor-pointer tracking-tighter text-black border-b-2 border-gray-200 hover:border-gray-400"
-                        >
-                          <span>Forgot Password?</span>
-                        </Link>
-                      </label>
-                    </div>{" "}
+                      </div>                    
                     <button
                       className="mt-3 text-lg font-semibold 
                             bg-gray-800 w-full text-white rounded-lg
